@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '17'
+        distribution: 'corretto'
+        java-package: 'jdk'
+        check-latest: false
 
     - name: Get current time
       uses: josStorer/get-current-time@v2

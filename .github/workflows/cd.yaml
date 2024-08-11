@@ -25,12 +25,11 @@ jobs:
 
     - name: Prepare deployment package
       run: |
-        mkdir -p deploy
-        cp build/libs/*.jar deploy/
-        echo "web: java -jar *.jar" > deploy/Procfile
+        cp build/libs/*.jar .
+        echo "web: java -jar *.jar" > Procfile
 
     - name: Compress deployment package
-      run: zip -r app.zip deploy/*
+      run: zip app.zip *.jar Procfile
 
     - name: Get current time
       uses: josStorer/get-current-time@v2

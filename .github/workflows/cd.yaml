@@ -19,7 +19,18 @@ jobs:
         java-version: '17'
         distribution: 'corretto'
         java-package: 'jdk'
-        check-latest: false
+
+    - name: Build with Gradle
+      run: ./gradlew clean build
+
+    - name: Prepare deployment package
+      run: |
+        mkdir -p deploy
+        cp build/libs/*.jar deploy/
+        echo "web: java -jar *.jar" > deploy/Procfile
+
+    - name: Compress deployment package
+      run: zip -r app.zip deploy/*
 
     - name: Get current time
       uses: josStorer/get-current-time@v2
@@ -27,12 +38,6 @@ jobs:
       with:
         format: YYYYMMDD_HH-mm-ss
         utcOffset: "+09:00"
-
-    - name: Build with Gradle
-      run: ./gradlew build
-
-    - name: compress
-      run: zip -r app.zip build/libs/*
 
     - name: Beanstalk Deploy
       uses: einaregilsson/beanstalk-deploy@v21
